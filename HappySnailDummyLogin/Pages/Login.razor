@@ -1,0 +1,60 @@
+﻿@page "/"
+@inject Data.LoginState loginState;
+
+
+@if (loginState.IsLoggedIn.Equals(false))
+{
+    <h1 style="text-align:center">Login</h1>
+
+    <div style="text-align:center">
+        <label>Username </label>
+        <input id="UserName: " name="UserName" type="text" @bind-value="username" />
+    </div>
+    <div style=" text-align:center">
+        <label>Password </label>
+        <input id="Password" name="Password" type="password" @bind-value="password" />
+    </div>
+    <div style="text-align:center">
+        <button type="submit" @onclick=@HandleLogin>
+            Submit
+        </button>
+    </div>
+    <p style="text-align:center">
+        Username: 'Happy' <br />
+        Password: 'Snail'
+    </p>
+}
+else
+{
+    <h1 style="text-align:center">Successful Login!</h1>
+    <div style="text-align:center">
+        <p> Thanks for logging in @loginState.username!</p>
+        <button type="submit" @onclick=@HandleLogout>
+            Logout
+        </button>
+    </div>
+}
+
+@code {
+
+    string username = "";
+    string password = "";
+    string correctPassword = "Snail";
+    void HandleLogin()
+    {
+        if (password.Equals(correctPassword))
+        {
+            if (username.Equals("Happy"))
+            {
+                loginState.SetLogin(true, username);
+            }
+        }
+    }
+    void HandleLogout()
+    {
+        username = "";
+        password = "";
+        loginState.SetLogin(false, "");
+    }
+}
+

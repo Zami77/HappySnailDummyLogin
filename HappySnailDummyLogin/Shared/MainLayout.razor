@@ -1,0 +1,33 @@
+﻿@inherits LayoutComponentBase
+
+@implements IDisposable
+
+@inject HappySnailDummyLogin.Data.LoginState loginState;
+
+<div class="sidebar">
+    @if (loginState.IsLoggedIn)
+    {
+        <NavMenu />
+    }
+</div>
+
+<div class="main">
+    <div class="top-row px-4">
+        <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
+    </div>
+
+    <div class="content px-4">
+        @Body
+    </div>
+</div>
+
+@code {
+    protected override void OnInitialized()
+    {
+        loginState.OnChange += StateHasChanged;
+    }
+    public void Dispose()
+    {
+        loginState.OnChange -= StateHasChanged;
+    }
+}
